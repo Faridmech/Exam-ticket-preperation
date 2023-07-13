@@ -22,21 +22,24 @@ export const Home: React.FC = () => {
     setInputArr(() => Array.from(Array(selectedRange).keys()));
   };
 
-  const [, setQuestionArray] = useState<{ value: string; id: number }[]>([]);
-
   const [inputText, setInputText] = useState<string>("");
 
+  const [questionArray, setQuestionArray] = useState<{ value: string }[]>([]);
+
   const listHandeler = () => {
-    if (inputText.trim()) {
-      setQuestionArray((prev) => [
-        ...prev,
-        {
-          value: inputText,
-          id: prev.length ? (prev.at(-1)?.id ?? 0) + 1 : 0,
-        },
-      ]);
-      console.log();
-    }
+    setQuestionArray((prev) => [
+      ...prev,
+      {
+        value: inputText,
+      },
+    ]);
+    console.log(questionArray);
+  };
+
+  const onChange = (e) => {
+    
+    setInputText(e.target.value);
+    console.log([e.target.id, e.target.value]);
   };
 
   return (
@@ -61,19 +64,19 @@ export const Home: React.FC = () => {
             {inputArr.map((item) => (
               <InputGroup key={item + "test"}>
                 <InputLeftAddon
-                  children={item + 1} 
+                  children={item + 1}
                   width="3rem"
                   background="transparent"
                   border="none"
                 />
                 <Input
-                  onChange={(e) => setInputText(e.target.value)}
+                  id={`${item}`}
+                  onChange={onChange}
                   width="75rem"
                   variant="flushed"
                   type="text"
                   paddingLeft="0.5rem"
                   overflow="hidden"
-                  
                 />
               </InputGroup>
             ))}
@@ -82,7 +85,7 @@ export const Home: React.FC = () => {
 
         <Center>
           <Button
-            onClick={listHandeler}
+            onChange={listHandeler}
             width="50rem"
             marginTop="3rem"
             marginBottom="3rem"
