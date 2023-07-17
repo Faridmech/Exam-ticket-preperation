@@ -22,26 +22,17 @@ export const Home: React.FC = () => {
     setInputArr(() => Array.from(Array(selectedRange).keys()));
   };
 
-  const [inputText, setInputText] = useState<string>("");
+  const [inputText, setInputText] = useState<{ [key in string]: string }>({});
 
-  const [questionArray, setQuestionArray] = useState<{ value: string }[]>([]);
-
-  const listHandeler = () => {
-    setQuestionArray((prev) => [
-      ...prev,
-      {
-        value: inputText,
-      },
-    ]);
-    console.log(questionArray);
+  const onChangeInputHandler = (name: string, value: string) => {
+    setInputText((prev) => {
+      return { ...prev, [name]: value };
+    });
   };
 
-  const onChange = (e) => {
-    
-    setInputText(e.target.value);
-    console.log([e.target.id, e.target.value]);
-  };
+  console.log("inputText", inputText);
 
+  
   return (
     <>
       <Center>
@@ -70,8 +61,12 @@ export const Home: React.FC = () => {
                   border="none"
                 />
                 <Input
+                  
+                  name={`${item}`}
                   id={`${item}`}
-                  onChange={onChange}
+                  onChange={(e) => {
+                    onChangeInputHandler(e.target.name, e.target.value);
+                  }}
                   width="75rem"
                   variant="flushed"
                   type="text"
@@ -84,12 +79,7 @@ export const Home: React.FC = () => {
         </Center>
 
         <Center>
-          <Button
-            onChange={listHandeler}
-            width="50rem"
-            marginTop="3rem"
-            marginBottom="3rem"
-          >
+          <Button width="50rem" marginTop="3rem" marginBottom="3rem">
             Submit
           </Button>
         </Center>
