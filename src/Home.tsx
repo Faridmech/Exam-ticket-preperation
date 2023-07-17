@@ -9,11 +9,18 @@ import {
   Select,
   Text,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+
+import {
+  useFuad,
+} from "./Contex";
+
+import React from "react";
 
 const MIN_RANGE_NUM = 30;
 
 export const Home: React.FC = () => {
+
+  const {onChangeInputHandler, onSubmit} = useFuad()
   const [inputArr, setInputArr] = React.useState(() =>
     Array.from(Array(MIN_RANGE_NUM).keys())
   );
@@ -22,17 +29,11 @@ export const Home: React.FC = () => {
     setInputArr(() => Array.from(Array(selectedRange).keys()));
   };
 
-  const [inputText, setInputText] = useState<{ [key in string]: string }>({});
-
-  const onChangeInputHandler = (name: string, value: string) => {
-    setInputText((prev) => {
-      return { ...prev, [name]: value };
-    });
-  };
-
-  console.log("inputText", inputText);
 
   
+
+
+
   return (
     <>
       <Center>
@@ -48,42 +49,44 @@ export const Home: React.FC = () => {
           </Box>
         </Box>
       </Center>
+        <FormControl>
+          <Center>
+            <Box marginTop="1em">
+              {inputArr.map((item) => (
+                <InputGroup key={item + "test"}>
+                  <InputLeftAddon
+                    children={item + 1}
+                    width="3rem"
+                    background="transparent"
+                    border="none"
+                  />
+                  <Input
+                    name={`${item}`}
+                    onChange={(e) => {
+                      onChangeInputHandler(e.target.name, e.target.value);
+                    }}
+                    width="75rem"
+                    variant="flushed"
+                    type="text"
+                    paddingLeft="0.5rem"
+                    overflow="hidden"
+                  />
+                </InputGroup>
+              ))}
+            </Box>
+          </Center>
 
-      <FormControl>
-        <Center>
-          <Box marginTop="1em">
-            {inputArr.map((item) => (
-              <InputGroup key={item + "test"}>
-                <InputLeftAddon
-                  children={item + 1}
-                  width="3rem"
-                  background="transparent"
-                  border="none"
-                />
-                <Input
-                  
-                  name={`${item}`}
-                  id={`${item}`}
-                  onChange={(e) => {
-                    onChangeInputHandler(e.target.name, e.target.value);
-                  }}
-                  width="75rem"
-                  variant="flushed"
-                  type="text"
-                  paddingLeft="0.5rem"
-                  overflow="hidden"
-                />
-              </InputGroup>
-            ))}
-          </Box>
-        </Center>
-
-        <Center>
-          <Button width="50rem" marginTop="3rem" marginBottom="3rem">
-            Submit
-          </Button>
-        </Center>
-      </FormControl>
+          <Center>
+            <Button
+              width="50rem"
+              marginTop="3rem"
+              marginBottom="3rem"
+              onClick={onSubmit}
+            >
+              Submit
+            </Button>
+          </Center>
+        </FormControl>
     </>
   );
 };
