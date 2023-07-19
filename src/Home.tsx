@@ -44,9 +44,9 @@ export const Home: React.FC = () => {
                   border="none"
                 />
                 <Input
-                  name={`${item}`}
+                  id={item}
                   onChange={(e) => {
-                    onChangeInputHandler(e.target.name, e.target.value);
+                    onChangeInputHandler(e.target.id, e.target.value);
                   }}
                   width="75rem"
                   variant="flushed"
@@ -61,6 +61,7 @@ export const Home: React.FC = () => {
 
         <Center>
           <Button
+          type="submit"
             width="50rem"
             marginTop="3rem"
             marginBottom="3rem"

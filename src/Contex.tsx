@@ -1,8 +1,11 @@
 import React, { useState, createContext, useContext } from "react";
-
+interface MyObject {
+  id: string;
+  value: string;
+}
 const MIN_RANGE_NUM = 30;
 const useStore = () => {
-  const [inputText, setInputText] = useState<{ [key in string]: string }>({});
+  const [inputText, setInputText] = useState<MyObject[]>();
   const [questionArray, setQuestionArray] = useState({});
 
   const [inputArr, setInputArr] = React.useState(() =>
@@ -14,9 +17,20 @@ const useStore = () => {
     setInputArr(() => Array.from(Array(selectedRange).keys()));
   };
 
-  const onChangeInputHandler = (name: string, value: string) => {
+  const onChangeInputHandler = (id: string, value: string) => {
     setInputText((prev) => {
-      return { ...prev, [name]: value };
+      
+      const existingIndex = prev?.findIndex((item) => item.id === id) ?? -1;
+
+      if (existingIndex !== -1) {
+        
+        const updatedInputText = [...(prev ?? [])];
+        updatedInputText[existingIndex] = { id, value };
+        return updatedInputText;
+      } else {
+       
+        return [...(prev ?? []), { id, value }];
+      }
     });
   };
 

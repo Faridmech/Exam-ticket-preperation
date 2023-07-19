@@ -9,25 +9,40 @@ import {
   Center,
   Box,
 } from "@chakra-ui/react";
+import {randomFromInterwal} from "./generateRandomBetweenTwo"
+
+
 
 export const Tickets: React.FC = () => {
-  const { inputArr } = useFuad();
+  const { inputArr, questionArray } = useFuad();
 
-  let questionNumber = Array(inputArr.length / 10).fill(0);
-  console.log(questionNumber);
-  const ticketNumber = Array(30).fill(0);
-  ticketNumber.map((i)=>{
-    console.log(i)
-  })
-  //const { questionArray } = useFuad();
-  //let keys = Object.keys(questionArray)
-  //let value:string = Object.values(questionArray)
+  let questionNumber = Array(inputArr.length / 10).fill(null)
+    
+ 
+
+  
+  const getTickets = () =>{
+   return Array(30).fill(null).map((_, index)=>{
+     return { id: index, questions:  questionNumber.map((_)=>{
+      const question = questionArray[randomFromInterwal()];
+      return question;
+      
+     }) 
+     
+    }
+     
+   })
+   
+  }
+
+
 
   return (
     <>
       <Box marginTop="3rem">
-        {ticketNumber.map((curr, index) => (
+        {getTickets().map((bilet, index) => (
           <Box
+            key={index}
             marginTop="20px"
             border="2px solid black"
             borderRadius="15px"
@@ -38,8 +53,9 @@ export const Tickets: React.FC = () => {
             </Center>
             <Center>
               <TableContainer width="80rem">
-                {questionNumber.map((currEl, i) => (
+                {bilet.questions.map((question, i) => (
                   <Table
+                    key={i}
                     variant="striped"
                     colorScheme="teal"
                     marginTop="0.6rem"
@@ -47,7 +63,7 @@ export const Tickets: React.FC = () => {
                     <Tbody>
                       <Tr>
                         <Td width="2rem">{i + 1}</Td>
-                        <Td>sual</Td>
+                        <Td>{question.value}</Td>
                       </Tr>
                     </Tbody>
                   </Table>
