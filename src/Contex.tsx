@@ -1,11 +1,29 @@
-import React, { useState, createContext, useContext } from "react";
+import React, { useState, useEffect, createContext, useContext } from "react";
+
 interface MyObject {
   id: string;
   value: string;
 }
+
 const MIN_RANGE_NUM = 30;
+
+
 const useStore = () => {
-  const [inputText, setInputText] = useState<MyObject[]>();
+
+  const [inputText, setInputText] = useState<MyObject[]>(()=>{
+    const savedInputText = localStorage.getItem("inputText");
+    return savedInputText ? JSON.parse(savedInputText) : [];
+  });
+
+  
+  useEffect(() => {
+    // Save data to local storage whenever the inputText changes
+    localStorage.setItem("inputText", JSON.stringify(inputText));
+  }, [inputText]);
+  
+
+
+
   const [questionArray, setQuestionArray] = useState({});
 
   const [inputArr, setInputArr] = React.useState(() =>
@@ -36,6 +54,7 @@ const useStore = () => {
 
   const onSubmit = () => {
     setQuestionArray(() => {
+      
       return inputText;
     });
   };

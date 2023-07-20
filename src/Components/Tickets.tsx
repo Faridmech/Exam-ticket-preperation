@@ -25,7 +25,7 @@ export const Tickets: React.FC = () => {
    return Array(30).fill(null).map((_, index)=>{
      return { id: index, questions:  questionNumber.map((_)=>{
       const question = questionArray[randomFromInterwal()];
-      return question;
+      return question === undefined ? "" : question;
       
      }) 
      
