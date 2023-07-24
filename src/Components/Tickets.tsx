@@ -9,32 +9,49 @@ import {
   Center,
   Box,
 } from "@chakra-ui/react";
-import {randomFromInterwal} from "./generateRandomBetweenTwo"
-
-
+import { randomFromInterwal } from "./generateRandomBetweenTwo";
+import { generatePdf } from "./utils";
 
 export const Tickets: React.FC = () => {
   const { inputArr, questionArray } = useFuad();
 
-  let questionNumber = Array(inputArr.length / 10).fill(null)
-    
- 
+  let questionNumber = Array(inputArr.length / 10).fill(null);
 
+  const getTickets = () => {
+    return Array(30)
+      .fill(null)
+      .map((_, index) => {
+        return {
+          id: index,
+          questions: questionNumber.map((_) => {
+            const question = questionArray[randomFromInterwal()];
+            return question === undefined ? "" : question;
+          }),
+        };
+      });
+  };
   
-  const getTickets = () =>{
-   return Array(30).fill(null).map((_, index)=>{
-     return { id: index, questions:  questionNumber.map((_)=>{
-      const question = questionArray[randomFromInterwal()];
-      return question === undefined ? "" : question;
-      
-     }) 
-     
-    }
-     
-   })
-   
-  }
+  
+  const handleExportPDF = () => {
 
+    const data = getTickets(); // Get the data to export
+    
+    const transformedData = data.map((item, index) => ({
+      id: index,
+      questions:  "ferb" // Rename the 'text' property to 'question' to match the headers
+    }));
+
+
+    const headers = [
+      { label: "Bilet", key: "id" },
+      { label: "Suallar", key: "questions" },
+    ]; // Define headers for the PDF table
+
+    const filename = "tickets.pdf"; // Set the desired filename for the exported PDF
+
+    // Call the utility function to generate and export the PDF
+    generatePdf({ data: transformedData, headers, filename });
+  };
 
 
   return (
@@ -73,6 +90,7 @@ export const Tickets: React.FC = () => {
           </Box>
         ))}
       </Box>
+      <button onClick={handleExportPDF}>Export as PDF</button>
     </>
   );
 };

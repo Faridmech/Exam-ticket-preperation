@@ -25,7 +25,7 @@
       "./node_modules/@types",
     ],
     "sourceMap": true,
-    "target": "es5",
+    "target": "es6",
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
